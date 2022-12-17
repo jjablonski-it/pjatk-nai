@@ -1009,6 +1009,11 @@ find-up@^5.0.0:
     locate-path "^6.0.0"
     path-exists "^4.0.0"
 
+fingerpose@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/fingerpose/-/fingerpose-0.1.0.tgz#b39af26b2fd4f01c3ad7fadf4a74dd07e34b728c"
+  integrity sha512-OXIRuRTgukBOo4xUO+vPchzHftZOPxO7VRh4HDjTg5NGr4gSkiY+LQShjsKAzmpRiRdmTgDh0dNsGpWa1Jsx3Q==
+
 flat-cache@^3.0.4:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/flat-cache/-/flat-cache-3.0.4.tgz#61b0338302b2fe9f957dcc32fc2a87f1c3048b11"
