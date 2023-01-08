@@ -1,3 +1,5 @@
+import { AnnotatedPrediction } from '@tensorflow-models/handpose'
+
 // Points for fingers
 const fingerJoints = {
   thumb: [0, 1, 2, 3, 4],
@@ -33,47 +35,50 @@ const style = {
 } as const
 
 // Drawing function
-export const drawHand = (predictions: any, ctx: any) => {
+export const drawHand = (predictions: AnnotatedPrediction[], canvas: HTMLCanvasElement) => {
+  const ctx = canvas.getContext('2d') as CanvasRenderingContext2D
+  ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
   // Check if we have predictions
-  if (predictions.length > 0) {
-    // Loop through each prediction
-    predictions.forEach((prediction: any) => {
-      // Grab landmarks
-      const landmarks = prediction.landmarks
+  if (!predictions.length) return
 
-      // Loop through fingers
-      for (let j = 0; j < Object.keys(fingerJoints).length; j++) {
-        let finger = Object.keys(fingerJoints)[j] as keyof typeof fingerJoints
-        //  Loop through pairs of joints
-        for (let k = 0; k < fingerJoints[finger].length - 1; k++) {
-          // Get pairs of joints
-          const firstJointIndex = fingerJoints[finger][k]
-          const secondJointIndex = fingerJoints[finger][k + 1]
+  // Loop through each prediction
+  predictions.forEach((prediction) => {
+    // Grab landmarks
+    const landmarks = prediction.landmarks
 
-          // Draw path
-          ctx.beginPath()
-          ctx.moveTo(landmarks[firstJointIndex][0], landmarks[firstJointIndex][1])
-          ctx.lineTo(landmarks[secondJointIndex][0], landmarks[secondJointIndex][1])
-          ctx.strokeStyle = 'plum'
-          ctx.lineWidth = 4
-          ctx.stroke()
-        }
-      }
+    // Loop through fingers
+    for (let j = 0; j < Object.keys(fingerJoints).length; j++) {
+      let finger = Object.keys(fingerJoints)[j] as keyof typeof fingerJoints
+      //  Loop through pairs of joints
+      for (let k = 0; k < fingerJoints[finger].length - 1; k++) {
+        // Get pairs of joints
+        const firstJointIndex = fingerJoints[finger][k]
+        const secondJointIndex = fingerJoints[finger][k + 1]
 
-      // Loop through landmarks and draw em
-      for (let i = 0; i < landmarks.length; i++) {
-        // Get x point
-        const x = landmarks[i][0]
-        // Get y point
-        const y = landmarks[i][1]
-        // Start drawing
+        // Draw path
         ctx.beginPath()
-        ctx.arc(x, y, style[i as keyof typeof style]['size'], 0, 3 * Math.PI)
-
-        // Set line color
-        ctx.fillStyle = style[i as keyof typeof style]['color']
-        ctx.fill()
+        ctx.moveTo(landmarks[firstJointIndex][0], landmarks[firstJointIndex][1])
+        ctx.lineTo(landmarks[secondJointIndex][0], landmarks[secondJointIndex][1])
+        ctx.strokeStyle = 'gray'
+        ctx.lineWidth = 4
+        ctx.stroke()
       }
-    })
-  }
+    }
+
+    // Loop through landmarks and draw em
+    for (let i = 0; i < landmarks.length; i++) {
+      // Get x point
+      const x = landmarks[i][0]
+      // Get y point
+      const y = landmarks[i][1]
+      // Start drawing
+      ctx.beginPath()
+      ctx.arc(x, y, style[i as keyof typeof style]['size'], 0, 3 * Math.PI)
+
+      // Set line color
+      // ctx.fillStyle = style[i as keyof typeof style]['color']
+      ctx.fillStyle = 'white'
+      ctx.fill()
+    }
+  })
 }
