@@ -24,7 +24,17 @@ for episode in range(1, episodes+1):
         action = env.action_space.sample()
         n_state, reward, done, info = env.step(action)
         score += reward
-    print('Episode:{} Score:{}'.format(episode, score))
+    print('Episode: {} reward: {}'.format(episode, score))
+    # Episode: 1 reward: 13.0
+    # Episode: 2 reward: 17.0
+    # Episode: 3 reward: 51.0
+    # Episode: 4 reward: 15.0
+    # Episode: 5 reward: 11.0
+    # Episode: 6 reward: 19.0
+    # Episode: 7 reward: 18.0
+    # Episode: 8 reward: 22.0
+    # Episode: 9 reward: 14.0
+    # Episode: 10 reward: 11.0
 
 
 def build_model(states, actions):
@@ -63,5 +73,16 @@ dqn.compile(Adam(lr=1e-3), metrics=['mae'])
 # Train the agent
 dqn.fit(env, nb_steps=1000, visualize=False, verbose=1)
 
-scores = dqn.test(env, nb_episodes=100, visualize=False)
+scores = dqn.test(env, nb_episodes=episodes, visualize=False)
 print(np.mean(scores.history['episode_reward']))
+# Testing for 10 episodes ...
+# Episode 1: reward: 200.000, steps: 200
+# Episode 2: reward: 200.000, steps: 200
+# Episode 3: reward: 200.000, steps: 200
+# Episode 4: reward: 200.000, steps: 200
+# Episode 5: reward: 200.000, steps: 200
+# Episode 6: reward: 200.000, steps: 200
+# Episode 7: reward: 200.000, steps: 200
+# Episode 8: reward: 200.000, steps: 200
+# Episode 9: reward: 200.000, steps: 200
+# Episode 10: reward: 199.000, steps: 199
